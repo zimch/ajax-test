@@ -1,0 +1,74 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#phoneBook {
+    border-collapse: collapse;
+    width: 70%;
+    margin: 20px;
+}
+
+#phoneBook th, #phoneBook td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#phoneBook th {
+    background-color: #f2f2f2;
+}
+
+#addEntryBtn {
+    margin: 20px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#saveNewEntryForm {
+    text-align: center;
+    margin: 20px;
+}
+
+#saveNewEntryForm form {
+    width: 50%;
+}
+
+#saveNewEntryForm label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#saveNewEntryForm input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#saveNewEntryForm button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефонная книга</title>
+    <link href="../static/css/style.css" rel="stylesheet" />
+</head>
+<body>
+<h1>Телефонная книга</h1>
+
+<table id="phoneBook">
+    <thead>
+    <tr>
+        <th>Имя абонента</th>
+        <th>Номер телефона</th>
+        <th>Дата последнего изменения</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<button id="addEntryBtn">Добавить запись</button>
+
+<div id="saveNewEntryForm" style="display: none;">
+    <h2>Редактирование записи</h2>
+    <form id="saveNewEntryForm">
+        <label for="subscriberName">Имя абонента:</label>
+        <input type="text" id="subscriberName" required><br>
+
+        <label for="phoneNumber">Номер телефона:</label>
+        <input type="text" id="phoneNumber" required><br>
+
+        <button type="button" onclick="saveEntry()">Сохранить</button>
+        <button type="button" onclick="cancelForm('SAVE')">Отмена</button>
+    </form>
+</div>
+
+<div id="editEntryForm" style="display: none;">
+    <h2>Редактирование записи</h2>
+    <form id="editEntryForm">
+        <label for="subscriberEditingName">Имя абонента:</label>
+        <input type="text" id="subscriberEditingName" required><br>
+
+        <label for="phoneEditingNumber">Номер телефона:</label>
+        <input type="text" id="phoneEditingNumber" required><br>
+
+        <button type="button" id="editEntryBtn">Редактировать</button>
+        <button type="button" onclick="cancelForm('EDIT')">Отмена</button>
+    </form>
+</div>
+
+<script src="../static/js/ajax.js"></script>
+</body>
+</html>
