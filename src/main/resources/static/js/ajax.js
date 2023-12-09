@@ -34,7 +34,10 @@ function renderEntries(entries) {
         const editButton = document.createElement('button');
         editButton.textContent = 'Редактировать';
         editButton.addEventListener('click', function () {
+            document.getElementById('subscriberEditingName').value = entry.subscriberName;
+            document.getElementById('phoneEditingNumber').value = entry.phoneNumber;
             document.getElementById('editEntryForm').style.display = 'block';
+
             document.getElementById('editEntryBtn').addEventListener('click', function () {
                 editEntry(entry.id);
             });
@@ -60,8 +63,6 @@ function saveEntry() {
 
     xhr.onreadystatechange = function() {
         if (xhr.status === 201) {
-            var data = JSON.parse(xhr.responseText);
-
             loadEntries();
 
             document.getElementById('subscriberName').value = '';
@@ -75,8 +76,8 @@ function saveEntry() {
 }
 
 function editEntry(id) {
-    const subscriberName = document.getElementById('subscriberEditingName').value;
-    const phoneNumber = document.getElementById('phoneEditingNumber').value;
+    var subscriberName = document.getElementById('subscriberEditingName').value;
+    var phoneNumber = document.getElementById('phoneEditingNumber').value;
 
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', `/api/entry/${id}`, true);
@@ -84,8 +85,6 @@ function editEntry(id) {
 
     xhr.onreadystatechange = function() {
         if (xhr.status === 201) {
-            var data = JSON.parse(xhr.responseText);
-
             loadEntries();
 
             document.getElementById('subscriberEditingName').value = '';

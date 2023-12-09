@@ -1,6 +1,7 @@
 # Тестовое задания
 
 * [API](#api)
+* [Build & Run](BUILD.md)
 
 # API
 

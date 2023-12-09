@@ -1,0 +1,12 @@
+version: '3.9'
+name: 'ajaxtest-project'
+
+services:
+  ajaxtest-default:
+    profiles:
+      - default
+    restart: always
+    container_name: ajaxtest
+    image: ajaxtest:latest
+    ports:
+      - "8080:8080"

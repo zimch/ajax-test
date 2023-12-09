@@ -1,0 +1,13 @@
+#!/bin/sh
+
+docker build --no-cache -t ajaxtest .
+
+mkdir -p ./target/docker
+
+cp docker-compose.yml ./target/docker/docker-compose.yml
+
+docker save ajaxtest:latest >./target/docker/ajaxtest-image.tar
+
+echo 'Packing:'
+
+tar -zcvf ./target/ajaxtest-image-and-compose.tar.gz -C ./target/docker/ .
