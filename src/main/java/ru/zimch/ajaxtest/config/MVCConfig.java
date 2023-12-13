@@ -1,4 +1,4 @@
-package ru.zimch.ajaxtest.configs;
+package ru.zimch.ajaxtest.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;

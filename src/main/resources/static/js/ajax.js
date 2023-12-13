@@ -1,128 +1,101 @@
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
     loadEntries();
 
-    document.getElementById('addEntryBtn').addEventListener('click', function () {
-        document.getElementById('saveNewEntryForm').style.display = 'block';
+    $('#addEntryBtn').click(function () {
+        $('#saveNewEntryForm').show();
     });
 });
 
 function loadEntries() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api/entry', true);
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var data = JSON.parse(xhr.responseText);
-            renderEntries(data);
-        }
-    };
-
-    xhr.send();
+    $.get('/api/entry', function (data) {
+        renderEntries(data);
+    });
 }
 
 function renderEntries(entries) {
-    const tableBody = document.querySelector('#phoneBook tbody');
-    tableBody.innerHTML = '';
+    const tableBody = $('#phoneBook tbody');
+    tableBody.empty();
 
-    entries.forEach(entry => {
-        const row = tableBody.insertRow();
-        row.insertCell(0).textContent = entry.subscriberName;
-        row.insertCell(1).textContent = entry.phoneNumber;
-        row.insertCell(2).textContent = entry.lastModifiedDate;
+    $.each(entries, function (index, entry) {
+        const row = tableBody.append('<tr></tr>').children('tr:last');
+        row.append('<td>' + entry.subscriberName + '</td>');
+        row.append('<td>' + entry.phoneNumber + '</td>');
+        row.append('<td>' + entry.lastModifiedDate + '</td>');
 
-        const actionsCell = row.insertCell(3);
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Редактировать';
-        editButton.addEventListener('click', function () {
-            document.getElementById('subscriberEditingName').value = entry.subscriberName;
-            document.getElementById('phoneEditingNumber').value = entry.phoneNumber;
-            document.getElementById('editEntryForm').style.display = 'block';
+        const actionsCell = row.append('<td></td>').children('td:last');
 
-            document.getElementById('editEntryBtn').addEventListener('click', function () {
-                editEntry(entry.id);
+        const editButton = $('<button>Редактировать</button>').click(function () {
+            $('#subscriberEditingName').val(entry.subscriberName);
+            $('#phoneEditingNumber').val(entry.phoneNumber);
+            $('#editEntryForm').show();
+
+            $('#editEntryBtn').click(function () {
+                editEntry(entry.entryId);
             });
         });
-        actionsCell.appendChild(editButton);
+        actionsCell.append(editButton);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Удалить';
-        deleteButton.addEventListener('click', function () {
-            deleteEntry(entry.id);
+        const deleteButton = $('<button>Удалить</button>').click(function () {
+            deleteEntry(entry.entryId);
         });
-        actionsCell.appendChild(deleteButton);
+        actionsCell.append(deleteButton);
     });
 }
 
 function saveEntry() {
-    const subscriberName = document.getElementById('subscriberName').value;
-    const phoneNumber = document.getElementById('phoneNumber').value;
+    const subscriberName = $('#subscriberName').val();
+    const phoneNumber = $('#phoneNumber').val();
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/entry', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function() {
-        if (xhr.status === 201) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/entry',
+        contentType: 'application/json',
+        data: JSON.stringify({ subscriberName, phoneNumber }),
+        success: function () {
             loadEntries();
-
-            document.getElementById('subscriberName').value = '';
-            document.getElementById('phoneNumber').value = '';
-
-            document.getElementById('saveNewEntryForm').style.display = 'none';
+            $('#subscriberName, #phoneNumber').val('');
+            $('#saveNewEntryForm').hide();
         }
-    };
-
-    xhr.send(JSON.stringify({ subscriberName, phoneNumber }));
+    });
 }
 
 function editEntry(id) {
-    var subscriberName = document.getElementById('subscriberEditingName').value;
-    var phoneNumber = document.getElementById('phoneEditingNumber').value;
+    const subscriberName = $('#subscriberEditingName').val();
+    const phoneNumber = $('#phoneEditingNumber').val();
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('PUT', `/api/entry/${id}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function() {
-        if (xhr.status === 201) {
+    $.ajax({
+        type: 'PUT',
+        url: `/api/entry/${id}`,
+        contentType: 'application/json',
+        data: JSON.stringify({ subscriberName, phoneNumber }),
+        success: function () {
             loadEntries();
-
-            document.getElementById('subscriberEditingName').value = '';
-            document.getElementById('phoneEditingNumber').value = '';
-
-            document.getElementById('editEntryForm').style.display = 'none';
+            $('#subscriberEditingName, #phoneEditingNumber').val('');
+            $('#editEntryForm').hide();
         }
-    };
-
-    xhr.send(JSON.stringify({ subscriberName, phoneNumber }));
+    });
 }
 
 function cancelForm(type) {
     switch (type) {
         case 'SAVE':
-            document.getElementById('subscriberName').value = '';
-            document.getElementById('phoneNumber').value = '';
-            document.getElementById('saveNewEntryForm').style.display = 'none';
+            $('#subscriberName, #phoneNumber').val('');
+            $('#saveNewEntryForm').hide();
             break;
 
         case 'EDIT':
-            document.getElementById('subscriberEditingName').value = '';
-            document.getElementById('phoneEditingNumber').value = '';
-            document.getElementById('editEntryForm').style.display = 'none';
+            $('#subscriberEditingName, #phoneEditingNumber').val('');
+            $('#editEntryForm').hide();
             break;
     }
-
 }
 
 function deleteEntry(id) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `/api/entry/${id}`, true);
-
-    xhr.onreadystatechange = function() {
-        if (xhr.status === 204) {
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/entry/${id}`,
+        success: function () {
             loadEntries();
         }
-    };
-
-    xhr.send();
+    });
 }

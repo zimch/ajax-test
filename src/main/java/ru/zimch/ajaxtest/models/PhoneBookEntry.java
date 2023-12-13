@@ -40,6 +40,11 @@ public class PhoneBookEntry {
     @JsonFormat(pattern = "EEE, d MMM yyyy HH:mm:ss")
     private LocalDateTime lastModifiedDate;
 
+    public PhoneBookEntry(String subscriberName, String phoneNumber) {
+        this.subscriberName = subscriberName;
+        this.phoneNumber = phoneNumber;
+    }
+
     public PhoneBookEntry(String subscriberName, String phoneNumber, LocalDateTime lastModifiedDate) {
         this.subscriberName = subscriberName;
         this.phoneNumber = phoneNumber;
